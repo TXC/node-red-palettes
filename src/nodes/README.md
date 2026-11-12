@@ -36,15 +36,15 @@ attributes, and the key in `package.json`.
    ```json
    "node-red": {
      "nodes": {
-       "my-node": "./dist/nodes/my-node/my-node.js"
+       "palette-demo": "./dist/nodes/palette-demo/palette-demo.js"
      }
    }
    ```
 
-3. Run `pnpm build`. You get two files in `dist/nodes/my-node/`:
-   `my-node.js` for the runtime, and `my-node.html` for the editor.
+3. Run `pnpm build`. You get two files in `dist/nodes/palette-demo/`:
+   `palette-demo.js` for the runtime, and `palette-demo.html` for the editor.
 
-### Runtime: `my-node/my-node.ts`
+### Runtime: `palette-demo/palette-demo.ts`
 
 Node-RED loads this file and calls its default export.
 
@@ -59,13 +59,13 @@ const nodeInit: NodeInitializer = (RED) => {
       done();
     });
   }
-  RED.nodes.registerType('my-node', MyNode);
+  RED.nodes.registerType('palette-demo', MyNode);
 };
 
 export default nodeInit;
 ```
 
-### Editor: `my-node/my-node.html/`
+### Editor: `palette-demo/palette-demo.html/`
 
 `index.ts` registers the node with the editor:
 
@@ -74,7 +74,7 @@ import type { EditorRED } from 'node-red';
 
 declare const RED: EditorRED;
 
-RED.nodes.registerType('my-node', {
+RED.nodes.registerType('palette-demo', {
   category: 'function',
   color: '#a6bbcf',
   defaults: { name: { value: '' } },
@@ -82,7 +82,7 @@ RED.nodes.registerType('my-node', {
   outputs: 1,
   icon: 'font-awesome/fa-cube',
   label() {
-    return this.name || 'my-node';
+    return this.name || 'palette-demo';
   },
 });
 ```
@@ -91,7 +91,7 @@ RED.nodes.registerType('my-node', {
 is tied to the setting `<name>` in `defaults`:
 
 ```html
-<script type="text/html" data-template-name="my-node">
+<script type="text/html" data-template-name="palette-demo">
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name" />
@@ -102,8 +102,27 @@ is tied to the setting `<name>` in `defaults`:
 `help.html` is shown in the editor's help sidebar:
 
 ```html
-<script type="text/html" data-help-name="my-node">
+<script type="text/html" data-help-name="palette-demo">
   <p>What the node does, what it expects and what it sends.</p>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>name
+      <span class="property-type">String</span>
+    </dt>
+    <dd>
+      The name of the node.
+    </dd>
+  </dl>
+  <h3>Output</h3>
+  <p>Returns something like this.</p>
+  <dl class="message-properties">
+    <dt>foo
+      <span class="property-type">unknown</span>
+    </dt>
+    <dd>
+      Some unknown data.
+    </dd>
+  </dl>
 </script>
 ```
 
